@@ -8,6 +8,7 @@ import ma.zyn.app.bean.core.locataire.Transaction;
 import ma.zyn.app.zynerator.bean.BaseEntity;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,7 @@ public class CompteLocataire extends BaseEntity {
     private BigDecimal debit = BigDecimal.ZERO;
     private BigDecimal credit = BigDecimal.ZERO;
 
+    private LocalDateTime dateCreation;
     private Locataire locataire;
     private Location location;
     private List<Transaction> transactions;
@@ -155,5 +157,13 @@ public class CompteLocataire extends BaseEntity {
 
     public void setSoldeInitial(BigDecimal soldeInitial) {
         this.soldeInitial = soldeInitial;
+    }
+
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
     }
 }

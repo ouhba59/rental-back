@@ -1,18 +1,17 @@
 package ma.zyn.app.service.impl.admin.locataire;
 
 
-import ma.zyn.app.bean.core.finance.CompteInstantanee;
-import ma.zyn.app.bean.core.locataire.Locataire;
+import ma.zyn.app.bean.core.finance.CompteLocataire;
 import ma.zyn.app.bean.core.locataire.Location;
 import ma.zyn.app.bean.core.locaux.Local;
 import ma.zyn.app.dao.criteria.core.locataire.LocationCriteria;
 import ma.zyn.app.dao.facade.core.locataire.LocationDao;
 import ma.zyn.app.dao.specification.core.locataire.LocationSpecification;
-import ma.zyn.app.service.facade.admin.finance.CompteInstantaneeAdminService;
 import ma.zyn.app.service.facade.admin.locataire.LocataireAdminService;
 import ma.zyn.app.service.facade.admin.locataire.LocationAdminService;
 import ma.zyn.app.service.facade.admin.locataire.StatutLocalAdminService;
 import ma.zyn.app.service.facade.admin.locaux.LocalAdminService;
+import ma.zyn.app.service.impl.admin.finance.CompteLocataireAdminServiceImpl;
 import ma.zyn.app.zynerator.exception.EntityNotFoundException;
 import ma.zyn.app.zynerator.util.RefelexivityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +33,7 @@ import static ma.zyn.app.zynerator.util.ListUtil.isNotEmpty;
 public class LocationAdminServiceImpl implements LocationAdminService {
 
     @Autowired
-    private CompteInstantaneeAdminService CompteInstantaneeAdminService;
+    private CompteLocataireAdminServiceImpl compteLocataireAdminService;
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
     public Location update(Location t) {
@@ -121,7 +119,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         return dao.countByLocalCode(code);
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
-	public boolean deleteById(Long id) {
+    public boolean deleteById(Long id) {
         boolean condition = (id != null);
         if (condition) {
             dao.deleteById(id);
@@ -134,17 +132,17 @@ public class LocationAdminServiceImpl implements LocationAdminService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
     public List<Location> delete(List<Location> list) {
-		List<Location> result = new ArrayList();
+        List<Location> result = new ArrayList();
         if (list != null) {
             for (Location t : list) {
                 if(dao.findById(t.getId()).isEmpty()){
-					result.add(t);
-				}else{
+                    result.add(t);
+                }else{
                     dao.deleteById(t.getId());
                 }
             }
         }
-		return result;
+        return result;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
@@ -154,7 +152,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         if (loaded == null) {
             findOrSaveAssociatedObject(t);
             saved = dao.save(t);
-            createCompteInstantanee(saved);
+            createCompteLocataire(t);
         }else {
             saved = null;
         }
@@ -162,14 +160,14 @@ public class LocationAdminServiceImpl implements LocationAdminService {
     }
 
 
-    public void createCompteInstantanee(Location location) {
-        CompteInstantanee CompteInstantanee = new CompteInstantanee();
-        CompteInstantanee.setLocataire(location.getLocataire());
-        BigDecimal solde = location.getLoyer().add(location.getCaution());
-        CompteInstantanee.setCredit(solde);
-        CompteInstantanee.setLocation(location);
-        CompteInstantaneeAdminService.create(CompteInstantanee);
+    public void createCompteLocataire(Location location) {
+        CompteLocataire compteLocataire = new CompteLocataire();
+        compteLocataire.setLocataire(location.getLocataire());
+        compteLocataire.setLocation(location);
+        compteLocataire.setDateCreation(location.getDateDebut());
+        compteLocataireAdminService.create(compteLocataire);
     }
+
 
 
     public Location findWithAssociatedLists(Long id){
@@ -177,7 +175,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         return result;
     }
 
-	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
     public List<Location> update(List<Location> ts, boolean createIfNotExist) {
         List<Location> result = new ArrayList<>();
         if (ts != null) {
@@ -259,7 +257,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         } else if (isEmpty(newList) && isNotEmpty(oldList)) {
             resultDelete.addAll(oldList);
         } else if (isNotEmpty(newList) && isNotEmpty(oldList)) {
-			extractToBeSaveOrDelete(oldList, newList, resultUpdateOrSave, resultDelete);
+            extractToBeSaveOrDelete(oldList, newList, resultUpdateOrSave, resultDelete);
         }
         result.add(resultUpdateOrSave);
         result.add(resultDelete);
@@ -267,23 +265,23 @@ public class LocationAdminServiceImpl implements LocationAdminService {
     }
 
     private void extractToBeSaveOrDelete(List<Location> oldList, List<Location> newList, List<Location> resultUpdateOrSave, List<Location> resultDelete) {
-		for (int i = 0; i < oldList.size(); i++) {
-                Location myOld = oldList.get(i);
-                Location t = newList.stream().filter(e -> myOld.equals(e)).findFirst().orElse(null);
-                if (t != null) {
-                    resultUpdateOrSave.add(t); // update
-                } else {
-                    resultDelete.add(myOld);
-                }
+        for (int i = 0; i < oldList.size(); i++) {
+            Location myOld = oldList.get(i);
+            Location t = newList.stream().filter(e -> myOld.equals(e)).findFirst().orElse(null);
+            if (t != null) {
+                resultUpdateOrSave.add(t); // update
+            } else {
+                resultDelete.add(myOld);
             }
-            for (int i = 0; i < newList.size(); i++) {
-                Location myNew = newList.get(i);
-                Location t = oldList.stream().filter(e -> myNew.equals(e)).findFirst().orElse(null);
-                if (t == null) {
-                    resultUpdateOrSave.add(myNew); // create
-                }
+        }
+        for (int i = 0; i < newList.size(); i++) {
+            Location myNew = newList.get(i);
+            Location t = oldList.stream().filter(e -> myNew.equals(e)).findFirst().orElse(null);
+            if (t == null) {
+                resultUpdateOrSave.add(myNew); // create
             }
-	}
+        }
+    }
 
     @Override
     public String uploadFile(String checksumOld, String tempUpladedFile, String destinationFilePath) throws Exception {
