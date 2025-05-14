@@ -44,7 +44,39 @@ public class CompteInstantaneeConverter {
     private boolean transactions;
     private boolean location;
     private boolean locale;
-    
+
+    public LocalConverter getLocalConverter() {
+        return localConverter;
+    }
+
+    public void setLocalConverter(LocalConverter localConverter) {
+        this.localConverter = localConverter;
+    }
+
+    public boolean isLocation() {
+        return location;
+    }
+
+    public void setLocation(boolean location) {
+        this.location = location;
+    }
+
+    public boolean isLocale() {
+        return locale;
+    }
+
+    public void setLocale(boolean locale) {
+        this.locale = locale;
+    }
+
+    public LocationConverter getLocationConverter() {
+        return locationConverter;
+    }
+
+    public void setLocationConverter(LocationConverter locationConverter) {
+        this.locationConverter = locationConverter;
+    }
+
     @Autowired
     private LocationConverter locationConverter;
 

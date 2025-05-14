@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static ma.zyn.app.zynerator.util.ListUtil.*;
@@ -162,6 +164,7 @@ public class LocataireAdminServiceImpl implements LocataireAdminService {
             if (t.getLocations() != null) {
                 t.getLocations().forEach(element-> {
                     element.setLocataire(saved);
+                    element.setActif(element.getDateDebut().getDayOfMonth() >= LocalDate.now().getDayOfMonth());
                     locationService.create(element);
                 });
             }
@@ -177,6 +180,8 @@ public class LocataireAdminServiceImpl implements LocataireAdminService {
         }
         return saved;
     }
+
+
 
 
     public Locataire findWithAssociatedLists(Long id){
@@ -239,6 +244,7 @@ public class LocataireAdminServiceImpl implements LocataireAdminService {
     public Locataire findByReferenceEntity(Locataire t){
         return t==null? null : dao.findLocataireByNomAndPrenomAndTelephone(t.getNom(),t.getPrenom(),t.getTelephone());
     }
+
     public void findOrSaveAssociatedObject(Locataire t){
         if( t != null) {
             t.setTypeLocataire(typeLocataireService.findOrSave(t.getTypeLocataire()));

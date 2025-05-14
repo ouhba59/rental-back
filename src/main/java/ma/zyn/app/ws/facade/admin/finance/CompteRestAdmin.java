@@ -2,10 +2,12 @@ package ma.zyn.app.ws.facade.admin.finance;
 
 import io.swagger.v3.oas.annotations.Operation;
 import ma.zyn.app.bean.core.finance.Compte;
+import ma.zyn.app.bean.core.finance.CompteInstantanee;
 import ma.zyn.app.dao.criteria.core.finance.CompteCriteria;
 import ma.zyn.app.service.facade.admin.finance.CompteAdminService;
 import ma.zyn.app.ws.converter.finance.CompteConverter;
 import ma.zyn.app.ws.dto.finance.CompteDto;
+import ma.zyn.app.ws.dto.finance.CompteInstantaneeDto;
 import ma.zyn.app.zynerator.util.PaginatedList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,48 @@ public class CompteRestAdmin {
 
 
 
+    @Operation(summary = "Finds Compte Instantanee by id")
+    @GetMapping("compte-instantanee")
+    public ResponseEntity<List<CompteDto>> findByCompteInstantane() {
+        List<Compte> list = service.findByCompteInstantaneNotNull();
+        HttpStatus status = HttpStatus.NO_CONTENT;
+        converter.initList(false);
+        converter.setCompteInstantanee(true);
+        List<CompteDto> dtos  = converter.toDto(list);
+        if (dtos != null && !dtos.isEmpty())
+            status = HttpStatus.OK;
+        ResponseEntity<List<CompteDto>> res = new ResponseEntity<>(dtos, status);
+        return res;
+    }
+
+    @Operation(summary = "Finds Compte Instantanee by id")
+    @GetMapping("banque")
+    public ResponseEntity<List<CompteDto>> findByBanque() {
+        List<Compte> list = service.findComptsByBanqueNotNull();
+        HttpStatus status = HttpStatus.NO_CONTENT;
+        converter.initList(false);
+        converter.setBanque(true);
+        List<CompteDto> dtos  = converter.toDto(list);
+        if (dtos != null && !dtos.isEmpty())
+            status = HttpStatus.OK;
+        ResponseEntity<List<CompteDto>> res = new ResponseEntity<>(dtos, status);
+        return res;
+    }
+
+
+    @Operation(summary = "Finds Compte Instantanee by id")
+    @GetMapping("caisse")
+    public ResponseEntity<List<CompteDto>> findByCaisse() {
+        List<Compte> list = service.findComptsByCaisseNotNull();
+        HttpStatus status = HttpStatus.NO_CONTENT;
+        converter.initList(false);
+        converter.setCaisse(true);
+        List<CompteDto> dtos  = converter.toDto(list);
+        if (dtos != null && !dtos.isEmpty())
+            status = HttpStatus.OK;
+        ResponseEntity<List<CompteDto>> res = new ResponseEntity<>(dtos, status);
+        return res;
+    }
 
     @Operation(summary = "Finds a list of all comptes")
     @GetMapping("")

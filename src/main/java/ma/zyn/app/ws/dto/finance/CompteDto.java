@@ -23,7 +23,8 @@ public class CompteDto  extends AuditBaseDto {
     private Integer numeroCompte  = 0 ;
     private String dateCreation ;
     private String code;
-
+    private String description;
+    private String nom;
 
     private BanqueDto banque ;
     private CaisseDto caisse;
@@ -137,5 +138,21 @@ public class CompteDto  extends AuditBaseDto {
 
     public void setSoldeInitial(BigDecimal soldeInitial) {
         this.soldeInitial = soldeInitial;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 }

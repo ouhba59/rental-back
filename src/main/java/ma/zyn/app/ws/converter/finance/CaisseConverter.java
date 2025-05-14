@@ -35,7 +35,8 @@ public class CaisseConverter {
                 item.setLibelle(dto.getLibelle());
             if(StringUtil.isNotEmpty(dto.getSolde()))
                 item.setSolde(dto.getSolde());
-
+            if (StringUtil.isNotEmpty(dto.getDateCreation()))
+                item.setDateCreation(DateUtil.stringEnToDate(dto.getDateCreation()));
 
 
         return item;

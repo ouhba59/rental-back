@@ -1,6 +1,7 @@
 package ma.zyn.app.service.facade.admin.finance;
 
 import ma.zyn.app.bean.core.finance.CompteAdmin;
+import ma.zyn.app.bean.core.finance.CompteInstantanee;
 import ma.zyn.app.dao.criteria.core.finance.CompteAdminCriteria;
 
 import java.util.List;

@@ -16,6 +16,7 @@ public class LocataireDto  extends AuditBaseDto {
     private String prenom  ;
     private String telephone  ;
     private String dateCreation ;
+    private String fullName;
 
     private TypeLocataireDto typeLocataire ;
     private CompteLocataireDto compteLocataire ;
@@ -105,5 +106,11 @@ public class LocataireDto  extends AuditBaseDto {
     }
 
 
+    public String getFullName() {
+        return fullName;
+    }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }

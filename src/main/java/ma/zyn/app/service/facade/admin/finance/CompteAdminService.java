@@ -55,7 +55,13 @@ public interface CompteAdminService {
 
     Compte findCharge();
 
+    List<Compte> findComptsByCaisseNotNull();
+
     Compte findBanque(Banque banque);
 
     Compte findCaisse(Caisse caisse);
+
+    List<Compte> findByCompteInstantaneNotNull();
+
+    List<Compte> findComptsByBanqueNotNull();
 }

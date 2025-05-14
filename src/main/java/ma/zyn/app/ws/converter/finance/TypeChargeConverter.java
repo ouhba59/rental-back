@@ -17,6 +17,11 @@ import java.util.stream.Collectors;
 public class TypeChargeConverter {
 
 
+    private final CompteChargeConverter compteChargeConverter;
+
+    public TypeChargeConverter(CompteChargeConverter compteChargeConverter) {
+        this.compteChargeConverter = compteChargeConverter;
+    }
 
     public TypeCharge toItem(TypeChargeDto dto) {
         if (dto == null) {

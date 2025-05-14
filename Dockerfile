@@ -1,26 +1,43 @@
-# Étape de build
-FROM maven:3.8.6-eclipse-temurin-17-alpine AS build
+# Étape 1: Build de l'application avec Maven
+FROM maven:3.8-openjdk-17-slim AS build
 WORKDIR /app
 
-# Copier les fichiers de configuration Maven pour télécharger les dépendances
+# Copier d'abord le fichier pom.xml pour tirer parti du cache des dépendances
 COPY pom.xml .
+# Télécharger toutes les dépendances
+RUN mvn dependency:go-offline -B
+
+# Copier le code source et construire l'application
 COPY src ./src
+RUN mvn package -DskipTests
 
-# Compiler l'application
-RUN mvn clean package -DskipTests
+# Étape 2: Créer l'image finale avec seulement le JRE et le JAR
+FROM eclipse-temurin:17-jre-alpine
 
-# Étape finale avec juste le JRE
-FROM eclipse-temurin:17-jre-jammy
+# Installer les outils essentiels et configurer les variables d'environnement
+RUN apk add --no-cache tzdata curl && \
+    cp /usr/share/zoneinfo/Europe/Paris /etc/localtime && \
+    echo "Europe/Paris" > /etc/timezone
 
 WORKDIR /app
 
-# Copier le JAR de l'application depuis l'étape de build
-COPY --from=build /app/target/*.jar app.jar
+# Créer un utilisateur non-root pour une sécurité accrue
+RUN addgroup --system appgroup && \
+    adduser --system appuser --ingroup appgroup
 
-# Port sur lequel l'application sera exposée
+# Copier seulement le JAR depuis l'étape de build
+COPY --from=build /app/target/*.jar app.jar
+RUN chown -R appuser:appgroup /app
+
+# Utiliser l'utilisateur non-root
+USER appuser
+
+# Configuration pour Railway
 ENV PORT=8080
 EXPOSE ${PORT}
 
+# Configuration JVM optimisée pour les conteneurs
+ENV JAVA_OPTS="-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0 -Djava.security.egd=file:/dev/./urandom"
 
-# Commande pour démarrer l'application
-ENTRYPOINT ["sh", "-c", "java -jar app.jar --server.port=${PORT}"]
+# Script de démarrage avec détection de port dynamique pour Railway
+ENTRYPOINT ["sh", "-c", "java ${JAVA_OPTS} -Dserver.port=${PORT} -jar app.jar"]

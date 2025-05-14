@@ -119,7 +119,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         return dao.countByLocalCode(code);
     }
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
-    public boolean deleteById(Long id) {
+	public boolean deleteById(Long id) {
         boolean condition = (id != null);
         if (condition) {
             dao.deleteById(id);
@@ -132,17 +132,17 @@ public class LocationAdminServiceImpl implements LocationAdminService {
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
     public List<Location> delete(List<Location> list) {
-        List<Location> result = new ArrayList();
+		List<Location> result = new ArrayList();
         if (list != null) {
             for (Location t : list) {
                 if(dao.findById(t.getId()).isEmpty()){
-                    result.add(t);
-                }else{
+					result.add(t);
+				}else{
                     dao.deleteById(t.getId());
                 }
             }
         }
-        return result;
+		return result;
     }
 
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
@@ -175,7 +175,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         return result;
     }
 
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class, readOnly = false)
     public List<Location> update(List<Location> ts, boolean createIfNotExist) {
         List<Location> result = new ArrayList<>();
         if (ts != null) {
@@ -257,7 +257,7 @@ public class LocationAdminServiceImpl implements LocationAdminService {
         } else if (isEmpty(newList) && isNotEmpty(oldList)) {
             resultDelete.addAll(oldList);
         } else if (isNotEmpty(newList) && isNotEmpty(oldList)) {
-            extractToBeSaveOrDelete(oldList, newList, resultUpdateOrSave, resultDelete);
+			extractToBeSaveOrDelete(oldList, newList, resultUpdateOrSave, resultDelete);
         }
         result.add(resultUpdateOrSave);
         result.add(resultDelete);
@@ -265,23 +265,23 @@ public class LocationAdminServiceImpl implements LocationAdminService {
     }
 
     private void extractToBeSaveOrDelete(List<Location> oldList, List<Location> newList, List<Location> resultUpdateOrSave, List<Location> resultDelete) {
-        for (int i = 0; i < oldList.size(); i++) {
-            Location myOld = oldList.get(i);
-            Location t = newList.stream().filter(e -> myOld.equals(e)).findFirst().orElse(null);
-            if (t != null) {
-                resultUpdateOrSave.add(t); // update
-            } else {
-                resultDelete.add(myOld);
+		for (int i = 0; i < oldList.size(); i++) {
+                Location myOld = oldList.get(i);
+                Location t = newList.stream().filter(e -> myOld.equals(e)).findFirst().orElse(null);
+                if (t != null) {
+                    resultUpdateOrSave.add(t); // update
+                } else {
+                    resultDelete.add(myOld);
+                }
             }
-        }
-        for (int i = 0; i < newList.size(); i++) {
-            Location myNew = newList.get(i);
-            Location t = oldList.stream().filter(e -> myNew.equals(e)).findFirst().orElse(null);
-            if (t == null) {
-                resultUpdateOrSave.add(myNew); // create
+            for (int i = 0; i < newList.size(); i++) {
+                Location myNew = newList.get(i);
+                Location t = oldList.stream().filter(e -> myNew.equals(e)).findFirst().orElse(null);
+                if (t == null) {
+                    resultUpdateOrSave.add(myNew); // create
+                }
             }
-        }
-    }
+	}
 
     @Override
     public String uploadFile(String checksumOld, String tempUpladedFile, String destinationFilePath) throws Exception {

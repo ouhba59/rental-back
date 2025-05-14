@@ -31,32 +31,14 @@ public class Compte  extends BaseEntity     {
     public void setSoldeInitial(BigDecimal soldeInitial) {
         this.soldeInitial = soldeInitial;
     }
-
-
-
-    public void setCredits(List<BigDecimal> credits) {
-        this.credits = credits;
-    }
-
-
-
-    public void setDebits(List<BigDecimal> debits) {
-        this.debits = debits;
-    }
-
     private BigDecimal soldeInitial = BigDecimal.ZERO;
-    private List<BigDecimal> credits = new ArrayList<>();
-    private List<BigDecimal> debits = new ArrayList<>();
-
     private Integer numeroCompte = 0;
-
     private LocalDateTime dateCreation ;
-
     private CompteAdmin compteAdmin;
-
+    private String nom;
     private String code;
     private Banque banque ;
-
+    private String description;
     private Caisse caisse;
     private CompteCharge compteCharge;
     private CompteInstantanee compteInstantanee;
@@ -78,21 +60,6 @@ public class Compte  extends BaseEntity     {
     public void addDebit(BigDecimal montant) {
         debit = debit.add(montant);
         updateTotaux();
-    }
-
-
-    public void annulerDerniereEntree() {
-        if (!credits.isEmpty()) {
-            credits.remove(credits.size() - 1);
-            updateTotaux();
-        }
-    }
-
-    public void annulerDerniereSortie() {
-        if (!debits.isEmpty()) {
-            debits.remove(debits.size() - 1);
-            updateTotaux();
-        }
     }
 
     private void updateTotaux() {
@@ -218,6 +185,22 @@ public class Compte  extends BaseEntity     {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 

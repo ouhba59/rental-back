@@ -221,7 +221,7 @@ public class TransactionAdminServiceImpl implements TransactionAdminService {
 
     private void updateCompteSource(Compte compteSource,Transaction transaction) {
         if ("reglement".equalsIgnoreCase(transaction.getTypeTransaction().getCode())) {
-            compteSource.addCredit(transaction.getMontant());
+            compteSource.addDebit(transaction.getMontant());
         } else if ("avoir".equalsIgnoreCase(transaction.getTypeTransaction().getCode())) {
             compteSource.addDebit(transaction.getMontant());
         } else if ("charge".equalsIgnoreCase(transaction.getTypeTransaction().getCode())) {

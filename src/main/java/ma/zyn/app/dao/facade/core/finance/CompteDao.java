@@ -6,6 +6,7 @@ import ma.zyn.app.bean.core.finance.Compte;
 import ma.zyn.app.zynerator.repository.AbstractRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -25,4 +26,7 @@ public interface CompteDao extends AbstractRepository<Compte,Long>  {
     Compte findByCaisse(Caisse caisse);
 
     Compte findByBanque(Banque banque);
+
+    List<Compte> findComptsByCompteInstantaneeNotNull();
+
 }

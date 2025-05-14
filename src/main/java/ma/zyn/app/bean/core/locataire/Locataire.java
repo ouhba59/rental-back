@@ -30,6 +30,7 @@ public class Locataire extends BaseEntity     {
     @Column(length = 500)
     private String telephone;
 
+    private String fullName;
     private LocalDateTime dateCreation ;
 
     private TypeLocataire typeLocataire ;
@@ -144,5 +145,12 @@ public class Locataire extends BaseEntity     {
         return Objects.hash(id);
     }
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 }
 

@@ -21,8 +21,6 @@ public class CompteLocataire extends BaseEntity {
 
 
     private BigDecimal soldeInitial = BigDecimal.ZERO;
-    private List<BigDecimal> credits = new ArrayList<>();
-    private List<BigDecimal> debits = new ArrayList<>();
 
     private BigDecimal solde = BigDecimal.ZERO;
     private BigDecimal debit = BigDecimal.ZERO;
@@ -89,19 +87,6 @@ public class CompteLocataire extends BaseEntity {
     }
 
 
-    public void annulerDerniereEntree() {
-        if (!credits.isEmpty()) {
-            credits.remove(credits.size() - 1);
-            updateTotaux();
-        }
-    }
-
-    public void annulerDerniereSortie() {
-        if (!debits.isEmpty()) {
-            debits.remove(debits.size() - 1);
-            updateTotaux();
-        }
-    }
 
     private void updateTotaux() {
         this.solde = credit.subtract(debit);

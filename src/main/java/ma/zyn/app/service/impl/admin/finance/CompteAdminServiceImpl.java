@@ -96,6 +96,7 @@ public class CompteAdminServiceImpl implements CompteAdminService {
         List<Compte> result = new ArrayList<>();
         result.addAll(dao.findComptesByBanqueNotNull());
         result.addAll(dao.findComptesByCaisseNotNull());
+        result.addAll(dao.findComptsByCompteInstantaneeNotNull());
         return result;
     }
 
@@ -182,7 +183,7 @@ public class CompteAdminServiceImpl implements CompteAdminService {
         if (loaded == null) {
             // New account
             saved = dao.save(t);
-            if(!saved.getCode().contains("CHARGE")||saved.getCompteInstantanee()!=null){
+            if(!saved.getCode().contains("CHARGE") || saved.getCompteInstantanee()!=null){
                 byId.getComptes().add(saved);
             }
 
@@ -283,6 +284,21 @@ public class CompteAdminServiceImpl implements CompteAdminService {
     @Override
     public Compte findCaisse(Caisse caisse) {
         return dao.findByCaisse(caisse);
+    }
+
+    @Override
+    public List<Compte> findByCompteInstantaneNotNull() {
+        return dao.findComptsByCompteInstantaneeNotNull();
+    }
+
+    @Override
+    public List<Compte> findComptsByBanqueNotNull() {
+        return dao.findComptesByBanqueNotNull();
+    }
+
+    @Override
+    public List<Compte> findComptsByCaisseNotNull() {
+        return dao.findComptesByCaisseNotNull();
     }
 
     @Override

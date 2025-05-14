@@ -2,10 +2,12 @@ package ma.zyn.app.ws.facade.admin.finance;
 
 import io.swagger.v3.oas.annotations.Operation;
 import ma.zyn.app.bean.core.finance.CompteAdmin;
+import ma.zyn.app.bean.core.finance.CompteInstantanee;
 import ma.zyn.app.dao.criteria.core.finance.CompteAdminCriteria;
 import ma.zyn.app.service.facade.admin.finance.CompteAdminAdminService;
 import ma.zyn.app.ws.converter.finance.CompteAdminConverter;
 import ma.zyn.app.ws.dto.finance.CompteAdminDto;
+import ma.zyn.app.ws.dto.finance.CompteInstantaneeDto;
 import ma.zyn.app.zynerator.util.PaginatedList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +48,9 @@ public class CompteAdminRestAdmin {
         }
         return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
+
+
+
 
 
     @Operation(summary = "Saves the specified  compteAdmin")

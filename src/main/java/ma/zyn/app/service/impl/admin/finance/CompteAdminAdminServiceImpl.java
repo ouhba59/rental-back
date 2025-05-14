@@ -2,6 +2,7 @@ package ma.zyn.app.service.impl.admin.finance;
 
 
 import ma.zyn.app.bean.core.finance.CompteAdmin;
+import ma.zyn.app.bean.core.finance.CompteInstantanee;
 import ma.zyn.app.dao.criteria.core.finance.CompteAdminCriteria;
 import ma.zyn.app.dao.facade.core.finance.CompteAdminDao;
 import ma.zyn.app.dao.specification.core.finance.CompteAdminSpecification;
@@ -236,9 +237,6 @@ public class CompteAdminAdminServiceImpl implements CompteAdminAdminService {
     public String uploadFile(String checksumOld, String tempUpladedFile, String destinationFilePath) throws Exception {
         return null;
     }
-
-
-
 
 
 

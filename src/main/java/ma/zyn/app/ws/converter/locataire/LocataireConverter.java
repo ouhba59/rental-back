@@ -52,6 +52,8 @@ public class LocataireConverter {
                 item.setNom(dto.getNom());
             if(StringUtil.isNotEmpty(dto.getPrenom()))
                 item.setPrenom(dto.getPrenom());
+            if(StringUtil.isNotEmpty(dto.getFullName()))
+                item.setFullName(dto.getFullName());
             if(StringUtil.isNotEmpty(dto.getTelephone()))
                 item.setTelephone(dto.getTelephone());
             if(StringUtil.isNotEmpty(dto.getDateCreation()))
@@ -84,6 +86,8 @@ public class LocataireConverter {
             LocataireDto dto = new LocataireDto();
             if(StringUtil.isNotEmpty(item.getId()))
                 dto.setId(item.getId());
+            if(StringUtil.isNotEmpty(item.getFullName()))
+                dto.setFullName(item.getFullName());
             if(StringUtil.isNotEmpty(item.getCode()))
                 dto.setCode(item.getCode());
             if(StringUtil.isNotEmpty(item.getNom()))

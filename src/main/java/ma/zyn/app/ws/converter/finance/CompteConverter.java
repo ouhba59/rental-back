@@ -36,6 +36,51 @@ public class CompteConverter {
     private boolean CompteInstantanee;
     private boolean banque;
     private boolean transactions;
+
+    public boolean isCaisse() {
+        return caisse;
+    }
+
+    public void setCaisse(boolean caisse) {
+        this.caisse = caisse;
+    }
+
+    public boolean isCompteCharge() {
+        return compteCharge;
+    }
+
+    public boolean isCompteInstantanee() {
+        return CompteInstantanee;
+    }
+
+    public void setCompteInstantanee(boolean compteInstantanee) {
+        CompteInstantanee = compteInstantanee;
+    }
+
+    public CaisseConverter getCaisseConverter() {
+        return caisseConverter;
+    }
+
+    public void setCaisseConverter(CaisseConverter caisseConverter) {
+        this.caisseConverter = caisseConverter;
+    }
+
+    public CompteChargeConverter getCompteChargeConverter() {
+        return compteChargeConverter;
+    }
+
+    public void setCompteChargeConverter(CompteChargeConverter compteChargeConverter) {
+        this.compteChargeConverter = compteChargeConverter;
+    }
+
+    public ma.zyn.app.ws.converter.finance.CompteInstantaneeConverter getCompteInstantaneeConverter() {
+        return CompteInstantaneeConverter;
+    }
+
+    public void setCompteInstantaneeConverter(ma.zyn.app.ws.converter.finance.CompteInstantaneeConverter compteInstantaneeConverter) {
+        CompteInstantaneeConverter = compteInstantaneeConverter;
+    }
+
     @Autowired
     private CaisseConverter caisseConverter;
     @Autowired
@@ -62,6 +107,10 @@ public class CompteConverter {
                 item.setDebit(dto.getDebit());
             if(StringUtil.isNotEmpty(dto.getCredit()))
                 item.setCredit(dto.getCredit());
+            if(StringUtil.isNotEmpty(dto.getNom()))
+                item.setNom(dto.getNom());
+            if(StringUtil.isNotEmpty(dto.getDescription()))
+                item.setDescription(dto.getDescription());
             if(StringUtil.isNotEmpty(dto.getNumeroCompte()))
                 item.setNumeroCompte(dto.getNumeroCompte());
             if(StringUtil.isNotEmpty(dto.getDateCreation()))
@@ -96,6 +145,10 @@ public class CompteConverter {
                 dto.setSolde(item.getSolde());
             if(StringUtil.isNotEmpty(item.getDebit()))
                 dto.setDebit(item.getDebit());
+            if(StringUtil.isNotEmpty(item.getNom()))
+                dto.setNom(item.getNom());
+            if(StringUtil.isNotEmpty(item.getDescription()))
+                dto.setDescription(item.getDescription());
             if(StringUtil.isNotEmpty(item.getCredit()))
                 dto.setCredit(item.getCredit());
             if(StringUtil.isNotEmpty(item.getSoldeInitial()))
@@ -114,6 +167,8 @@ public class CompteConverter {
 
             }
             if(this.CompteInstantanee && item.getCompteInstantanee()!=null) {
+                CompteInstantaneeConverter.setLocataire(true);
+                CompteInstantaneeConverter.setLocale(true);
                 dto.setCompteInstantanee(CompteInstantaneeConverter.toDto(item.getCompteInstantanee())) ;
 
             }
@@ -235,5 +290,9 @@ public class CompteConverter {
     }
     public void  setTransactions(boolean transactions ){
         this.transactions  = transactions ;
+    }
+
+    public void setCompteCharge(boolean compteCharge) {
+        this.compteCharge = compteCharge;
     }
 }

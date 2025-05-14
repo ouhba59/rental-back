@@ -2,7 +2,6 @@ package ma.zyn.app.service.impl.admin.locataire;
 
 
 import ma.zyn.app.bean.core.finance.Compte;
-import ma.zyn.app.bean.core.finance.CompteLocataire;
 import ma.zyn.app.bean.core.locataire.Reglement;
 import ma.zyn.app.bean.core.locataire.Transaction;
 import ma.zyn.app.dao.criteria.core.locataire.ReglementCriteria;
@@ -26,7 +25,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
